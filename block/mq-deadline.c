@@ -794,7 +794,8 @@ static struct elevator_type mq_deadline = {
 	.elevator_attrs = deadline_attrs,
 	.elevator_name = "mq-deadline",
 	.elevator_alias = "deadline",
-	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
+	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE |
+	ELEVATOR_F_SINGLE_HW_QUEUE,
 	.elevator_owner = THIS_MODULE,
 };
 MODULE_ALIAS("mq-deadline-iosched");
