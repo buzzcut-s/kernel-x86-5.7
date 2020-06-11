@@ -623,15 +623,15 @@ static inline bool elv_support_iosched(struct request_queue *q)
 }
 
 /*
- * For single queue devices, default to using mq-deadline. If we have multiple
- * queues or mq-deadline is not available, default to "none".
+ * For single queue devices, default to using bfq. If we have multiple
+ * queues or bfq is not available, default to "none".
  */
 static struct elevator_type *elevator_get_default(struct request_queue *q)
 {
 	if (q->nr_hw_queues != 1)
 		return NULL;
 
-	return elevator_get(q, "mq-deadline", false);
+	return elevator_get(q, "bfq", false);
 }
 
 /*
@@ -677,6 +677,9 @@ void elevator_init_mq(struct request_queue *q)
 
 	if (unlikely(q->elevator))
 		return;
+
+	if (q->nr_hw_queues == 1)
+		q->required_elevator_features |= ELEVATOR_F_SINGLE_HW_QUEUE;
 
 	if (!q->required_elevator_features)
 		e = elevator_get_default(q);
