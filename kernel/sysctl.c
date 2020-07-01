@@ -135,7 +135,7 @@ static unsigned long one_ul = 1;
 static unsigned long long_max = LONG_MAX;
 static int one_hundred = 100;
 static int one_thousand = 1000;
-#ifdef CONFIG_SCHED_BMQ
+#ifdef CONFIG_SCHED_ALT
 static int __maybe_unused zero = 0;
 extern int sched_yield_type;
 #endif
@@ -295,7 +295,7 @@ static struct ctl_table sysctl_base_table[] = {
 	{ }
 };
 
-#if defined(CONFIG_SCHED_DEBUG) && !defined(CONFIG_SCHED_BMQ)
+#if defined(CONFIG_SCHED_DEBUG) && !defined(CONFIG_SCHED_ALT)
 static int min_sched_granularity_ns = 100000;		/* 100 usecs */
 static int max_sched_granularity_ns = NSEC_PER_SEC;	/* 1 second */
 static int min_wakeup_granularity_ns;			/* 0 usecs */
@@ -312,7 +312,7 @@ static int max_extfrag_threshold = 1000;
 #endif
 
 static struct ctl_table kern_table[] = {
-#ifndef CONFIG_SCHED_BMQ
+#ifndef CONFIG_SCHED_ALT
 	{
 		.procname	= "sched_child_runs_first",
 		.data		= &sysctl_sched_child_runs_first,
@@ -494,7 +494,7 @@ static struct ctl_table kern_table[] = {
 		.extra2		= SYSCTL_ONE,
 	},
 #endif
-#endif /* !CONFIG_SCHED_BMQ */
+#endif /* !CONFIG_SCHED_ALT */
 #ifdef CONFIG_PROVE_LOCKING
 	{
 		.procname	= "prove_locking",
@@ -1067,7 +1067,7 @@ static struct ctl_table kern_table[] = {
 		.proc_handler	= proc_dointvec,
 	},
 #endif
-#ifdef CONFIG_SCHED_BMQ
+#ifdef CONFIG_SCHED_ALT
 	{
 		.procname	= "yield_type",
 		.data		= &sched_yield_type,
