@@ -2349,7 +2349,20 @@ static void quirk_enable_aspm_l1(struct pci_dev *dev)
 		pcie_capability_write_word(bridge, PCI_EXP_LNKCTL,
 					   lnkctl | PCI_EXP_LNKCTL_ASPM_L1);
 }
+
 DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_TI, 0x8240, quirk_enable_aspm_l1);
+static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
+{
+	pci_info(dev, "Disabling ASPM L0s/L1\n");
+	pci_disable_link_state(dev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1);
+}
+
+/*
+ * ASM1083/1085 PCIe-PCI bridge devices cause AER timeout errors on the
+ * upstream PCIe root port when ASPM is enabled. At least L0s mode is affected;
+ * disable both L0s and L1 for now to be safe.
+ */
+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
 
 /*
  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
